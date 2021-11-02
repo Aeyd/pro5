@@ -1,0 +1,19 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "simple-chart-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/simpleChart/SimpleChartWebPart.js",
+          "manifest": "./src/webparts/simpleChart/SimpleChartWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "SimpleChartWebPartStrings": "lib/webparts/simpleChart/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+  }
+}
