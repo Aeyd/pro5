@@ -17,7 +17,7 @@ import { ISimpleChartProps } from './components/ISimpleChartProps';
 import { ListService } from '../services/ListService';
 import { IList } from '../services/IList';
 import { IListField } from '../services/IListField';
-import { IListService } from '../../../lib/webparts/services/IListService';
+import { IListService } from '../services/IListService';
 
 export interface ISimpleChartWebPartProps {
   heading: string;
@@ -181,6 +181,10 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
           resolve(options);
       });
     });
+  }
+
+  protected get disableReactivePropertyChanges(): boolean {
+    return true;
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {

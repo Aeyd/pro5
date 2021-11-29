@@ -7,7 +7,7 @@ import { ChartControl, ChartType } from '@pnp/spfx-controls-react/lib/ChartContr
 import { ChartData } from 'chart.js';
 import { IListService } from '../../services/IListService';
 import { ListService } from '../../services/ListService';
-import { IListItem } from '../../../../lib/webparts/services/IListItem';
+import { IListItem } from '../../services/IListItem';
 import { Placeholder } from '@pnp/spfx-controls-react/lib/Placeholder';
 
 export default class SimpleChart extends React.Component<ISimpleChartProps, {}> {
@@ -51,33 +51,7 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
 
       // TODO: don't calculate data here, move in new DataProvider class
       const dataProvider: IListService = new ListService(this.props.context);
-      dataProvider.getListItems(this.props.listName, this.props.labelColumnName, this.props.dataColumnName).then((listdata: Array<IListItem>) => {
-        
-        let lbl: string[] = [];
-        let val: number[] = [];
-
-        listdata.map((item: IListItem) => {
-          lbl.push(item.Label);
-          val.push(item.Value);
-        });
-
-        // sort from highest to lowest
-        val.sort((a,b) => b-a);
-
-        const data: ChartData =
-        {
-          labels: lbl,
-          datasets: [
-            {
-              data: val, 
-              backgroundColor: 'rgb(255, 99, 132)'
-            }
-          ]
-        };
-
-        console.log(lbl);
-        console.log(val);
-
+      dataProvider.getChartData(this.props.listName, this.props.labelColumnName, this.props.dataColumnName).then((data: ChartData) => {
         resolve(data);
       });
     });

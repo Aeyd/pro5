@@ -34,6 +34,7 @@ export class ListService implements IListService {
             .select('Id', 'Title', 'InternalName', 'TypeAsString').get();
     }
 
+    // unused
     public getListItems(listId: string, labelField: string, valueField: string): Promise<Array<IListItem>> {
         sp.setup({
             spfxContext: this._context
@@ -54,7 +55,6 @@ export class ListService implements IListService {
         });
     }
 
-    // unused
     public getChartData(listId: string, labelField: string, valueField: string): Promise<ChartData> {
         sp.setup({
             spfxContext: this._context
