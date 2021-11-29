@@ -67,7 +67,9 @@ export class ListService implements IListService {
                 let lbl: string[] = [];
                 let val: number[] = [];
 
-                rows.map((item: IListItem) => {
+                console.log(rows);
+
+                rows.map((item) => {
                     lbl.push(item[labelField]);
                     val.push(item[valueField]);
                 });
@@ -78,6 +80,48 @@ export class ListService implements IListService {
                     datasets: [
                         {
                             data: val
+                        }
+                    ]
+                };
+
+                resolve(data);
+            });
+        });
+    }
+
+    public getChartDataCount(listId: string, labelField: string, valueField: string): Promise<ChartData> {
+        sp.setup({
+            spfxContext: this._context
+        });
+
+        let fields: string[] = ['Id', labelField, valueField];
+
+        return new Promise<ChartData>(resolve => {
+            sp.web.lists.getById(listId).items.select(...fields).get().then((rows: any[]) => {
+                let val = [];
+
+                const groupBy = (keys) => (array) =>
+                    array.reduce((objectsByKeyValue, obj) => {
+                        const value = keys.map((key) => obj[key]).join("-");
+                        objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
+                        return objectsByKeyValue;
+                }, {});
+
+                rows.map((item) => {
+                    if(val[item[labelField]] === undefined) {
+                        val[item[labelField]] = item[labelField];
+                    }
+                    else {
+                        val[item[labelField]]++;
+                    }
+                });
+
+                let data: ChartData =
+                {
+                    labels: Object.keys(val),
+                    datasets: [
+                        {
+                            data: []
                         }
                     ]
                 };
