@@ -175,7 +175,7 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
 
           response.forEach((item: IListField) => {
             // note: key is title here and not id, fields are accessed with string name 
-            options.push({'key': item.Title, 'text': item.Title});
+            options.push({'key': item.InternalName, 'text': item.Title});
           });
           
           resolve(options);

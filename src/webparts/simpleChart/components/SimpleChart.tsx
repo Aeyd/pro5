@@ -51,7 +51,7 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
 
       // TODO: don't calculate data here, move in new DataProvider class
       const dataProvider: IListService = new ListService(this.props.context);
-      dataProvider.getChartData(this.props.listName, this.props.labelColumnName, this.props.dataColumnName).then((data: ChartData) => {
+      dataProvider.getChartDataCount(this.props.listName, this.props.labelColumnName, this.props.dataColumnName).then((data: ChartData) => {
         resolve(data);
       });
     });

@@ -67,8 +67,6 @@ export class ListService implements IListService {
                 let lbl: string[] = [];
                 let val: number[] = [];
 
-                console.log(rows);
-
                 rows.map((item) => {
                     lbl.push(item[labelField]);
                     val.push(item[valueField]);
@@ -98,30 +96,26 @@ export class ListService implements IListService {
 
         return new Promise<ChartData>(resolve => {
             sp.web.lists.getById(listId).items.select(...fields).get().then((rows: any[]) => {
-                let val = [];
-
-                const groupBy = (keys) => (array) =>
-                    array.reduce((objectsByKeyValue, obj) => {
-                        const value = keys.map((key) => obj[key]).join("-");
-                        objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
-                        return objectsByKeyValue;
-                }, {});
+                let lbl: string[] = [];
+                let count: number[] = [];
 
                 rows.map((item) => {
-                    if(val[item[labelField]] === undefined) {
-                        val[item[labelField]] = item[labelField];
+                    let groupId = lbl.indexOf(item[labelField]);
+                    if(groupId > -1) {
+                        count[groupId] += 1;
                     }
                     else {
-                        val[item[labelField]]++;
+                        lbl.push(item[labelField]);
+                        count.push(1);
                     }
                 });
 
                 let data: ChartData =
                 {
-                    labels: Object.keys(val),
+                    labels: lbl,
                     datasets: [
                         {
-                            data: []
+                            data: count
                         }
                     ]
                 };
