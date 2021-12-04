@@ -15,7 +15,7 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
   
   public render(): React.ReactElement<ISimpleChartProps> {
     if(this._chartElem) {
-      this._chartElem.getChart().destroy();
+      //this._chartElem.getChart().destroy();
     }
     
     return (
