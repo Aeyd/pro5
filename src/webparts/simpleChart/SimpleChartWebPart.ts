@@ -40,8 +40,6 @@ ERROR:
 
 */
 
-
-
 export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleChartWebPartProps> {
   private lists: IPropertyPaneDropdownOption[];
   private columns: IPropertyPaneDropdownOption[];
@@ -50,7 +48,7 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
   private columnDropdownDisabled: boolean;
 
   public render(): void {
-    const element: React.ReactElement<ISimpleChartProps > = React.createElement(
+    const element = React.createElement(
       SimpleChart,
       {
         heading: this.properties.heading,
@@ -71,10 +69,6 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
   protected get dataVersion(): Version {
     return Version.parse('1.0');
   }
-  
-  // protected get disableReactivePropertyChanges(): boolean {
-  //   return true;
-  // }
   
   protected onInit(): Promise<void> {
     this.columnDropdownDisabled = !this.properties.listName;
@@ -104,7 +98,7 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
         this.columnDropdownDisabled = !this.properties.listName;
         this.context.propertyPane.refresh();
         this.context.statusRenderer.clearLoadingIndicator(this.domElement);
-        this.render();
+        //this.render();
       });
   }
 

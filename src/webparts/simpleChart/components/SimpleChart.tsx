@@ -11,11 +11,18 @@ import { IListItem } from '../../services/IListItem';
 import { Placeholder } from '@pnp/spfx-controls-react/lib/Placeholder';
 
 export default class SimpleChart extends React.Component<ISimpleChartProps, {}> {
+  private _chartElem: ChartControl = undefined;
+  
   public render(): React.ReactElement<ISimpleChartProps> {
+    if(this._chartElem) {
+      this._chartElem.getChart().destroy();
+    }
+    
     return (
       <div className={styles.simpleChart} >
         <ChartControl
           type={ChartType.Bar}
+          ref={this._linkElement}
           datapromise={this._loadAsyncData()}
           //loadingtemplate={() => <div>...loading</div>}
           options={{
@@ -31,25 +38,27 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
             {
               yAxes:
                 [{
+                  stacked: true,
                   ticks:
                   {
                     beginAtZero: true
                   }
                 }]
-            },
-            animation: {
-              duration: 0
             }
           }}
         />
+        <div style={{ clear: "both" }} />
       </div >
     );
+  }
+
+  private _linkElement = (e: ChartControl) => {
+    this._chartElem = e;
   }
 
   private _loadAsyncData(): Promise<ChartData> {
     return new Promise<ChartData>(resolve => {
 
-      // TODO: don't calculate data here, move in new DataProvider class
       const dataProvider: IListService = new ListService(this.props.context);
       dataProvider.getChartDataCount(this.props.listName, this.props.labelColumnName, this.props.dataColumnName).then((data: ChartData) => {
         resolve(data);
