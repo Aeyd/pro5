@@ -87,12 +87,12 @@ export class ListService implements IListService {
         });
     }
 
-    public getChartDataCount(listId: string, labelField: string, valueField: string): Promise<ChartData> {
+    public getChartDataCount(listId: string, labelField: string): Promise<ChartData> {
         sp.setup({
             spfxContext: this._context
         });
 
-        let fields: string[] = ['Id', labelField, valueField];
+        let fields: string[] = ['Id', labelField];
 
         return new Promise<ChartData>(resolve => {
             sp.web.lists.getById(listId).items.select(...fields).get().then((rows: any[]) => {
@@ -125,5 +125,56 @@ export class ListService implements IListService {
         });
     }
 
-    
+    public getChartDataGroupByCount(listId: string, labelField: string, valueField: string): Promise<ChartData> {
+        sp.setup({
+            spfxContext: this._context
+        });
+
+        let fields: string[] = ['Id', labelField, valueField];
+
+        return new Promise<ChartData>(resolve => {
+            sp.web.lists.getById(listId).items.select(...fields).get().then((rows: any[]) => {
+                let lbl: string[] = [];
+                let count: number[] = [];
+
+                let grouped = this.groupBy(rows, labelField, valueField);
+
+                console.log(grouped);
+
+                let data: ChartData =
+                {
+                    labels: lbl,
+                    datasets: [
+                        {
+
+                            data: []
+                        }, {
+
+                            data: []
+                        }
+
+
+                    ]
+                };
+
+                resolve(data);
+            });
+        });
+    }
+
+    public groupBy(objectArray, property1, property2) {
+        return objectArray.reduce((acc, obj) => {
+           const key1 = obj[property1];
+           const key2 = obj[property2];
+           if (!acc[key1]) {
+              acc[key1] = [];
+           }
+           if (!acc[key1][key2]) {
+            acc[key1][key2] = 0;
+           }
+
+           acc[key1][key2] += 1;
+           return acc;
+        }, {});
+    }
 }

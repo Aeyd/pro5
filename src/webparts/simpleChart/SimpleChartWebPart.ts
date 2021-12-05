@@ -8,6 +8,9 @@ import {
   IPropertyPaneDropdownOption,
   PropertyPaneDropdown,
   PropertyPaneCheckbox,
+  IPropertyPaneGroup,
+  IPropertyPaneField,
+  IPropertyPaneDropdownProps,
   WebPartContext
 } from '@microsoft/sp-webpart-base';
 
@@ -24,8 +27,14 @@ export interface ISimpleChartWebPartProps {
   listName: string;
   labelColumnName: string;
   dataColumnName: string;
+  mode: number;
+  sort: number;
   context: WebPartContext;
 }
+
+export enum Mode {Normal=0, Count=1, GroupByCount=2};
+export enum Sort {Marketing=1, SalesMan=2};
+
 
 /* TODO:
 
@@ -52,6 +61,7 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
       SimpleChart,
       {
         heading: this.properties.heading,
+        mode: this.properties.mode,
         listName: this.properties.listName,
         labelColumnName: this.properties.labelColumnName,
         dataColumnName: this.properties.dataColumnName,
@@ -128,7 +138,7 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
           // clear status indicator
           this.context.statusRenderer.clearLoadingIndicator(this.domElement);
           // re-render the web part as clearing the loading indicator removes the web part body
-          this.render();
+          // this.render();
           // refresh the item selector control by repainting the property pane
           this.context.propertyPane.refresh();
         });
@@ -181,6 +191,43 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
     return true;
   }
 
+  private getConditionalGroup() : IPropertyPaneGroup{
+
+    let groupFields : Array<IPropertyPaneField<any>> = new Array<IPropertyPaneField<any>>();
+    let group : IPropertyPaneGroup = {
+      groupName: 'Data',
+      groupFields: groupFields,
+    }
+  
+    let listChoice : IPropertyPaneField<IPropertyPaneDropdownProps> = PropertyPaneDropdown ('listName', {
+      label: 'List',
+      options: this.lists,
+      disabled: this.listsDropdownDisabled
+    });
+    groupFields.push(listChoice);
+
+    let labelColumnChoice : IPropertyPaneField<IPropertyPaneDropdownProps> = PropertyPaneDropdown('labelColumnName', {
+      label: 'Label Column',
+      options: this.columns,
+      disabled: this.columnDropdownDisabled
+    })
+    groupFields.push(labelColumnChoice);
+
+    let dataColumnChoice : IPropertyPaneField<IPropertyPaneDropdownProps> = PropertyPaneDropdown ('dataColumnName', {
+    label: 'Data Column',
+      options: this.columns,
+      disabled: this.columnDropdownDisabled
+    });
+    groupFields.push(dataColumnChoice);
+
+    // if count mode remove data column
+    if (this.properties.mode == Mode.Count){
+      groupFields.pop();
+    }
+  
+    return group;
+  }
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
@@ -190,31 +237,28 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
           },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              groupName: 'General',
               groupFields: [
                 PropertyPaneTextField('heading', {
                   label: strings.DescriptionFieldLabel
                 }),
-                PropertyPaneDropdown('listName', {
-                  label: 'List',
-                  options: this.lists,
-                  disabled: this.listsDropdownDisabled
-                }),
-                PropertyPaneDropdown('labelColumnName', {
-                  label: 'Label Column',
-                  options: this.columns,
-                  disabled: this.columnDropdownDisabled
-                }),
-                PropertyPaneDropdown('dataColumnName', {
-                  label: 'Data Column',
-                  options: this.columns,
-                  disabled: this.columnDropdownDisabled
+                PropertyPaneDropdown('mode', {
+                  label: 'Data Mode',
+                  selectedKey: Mode.Normal,
+                  options : [
+                    {key: Mode.Normal, text:'Normal'},
+                    {key: Mode.Count, text:'Count'},
+                    {key: Mode.GroupByCount, text:'Group By Count'}
+                  ]
                 })
               ]
-            }
+            },
+            this.getConditionalGroup()
           ]
         }
       ]
     };
   }
 }
+
+
