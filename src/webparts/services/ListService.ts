@@ -101,7 +101,7 @@ export class ListService implements IListService {
 
                 rows.map((item) => {
                     let groupId = lbl.indexOf(item[labelField]);
-                    if(groupId > -1) {
+                    if (groupId > -1) {
                         count[groupId] += 1;
                     }
                     else {
@@ -139,22 +139,61 @@ export class ListService implements IListService {
 
                 let grouped = this.groupBy(rows, labelField, valueField);
 
-                console.log(grouped);
+
+
+
+                for (var key1 in grouped) {
+                    lbl.push(key1);
+
+                    console.log("wee" + key1);
+                    for (var key2 in grouped[key1]) {
+
+
+                        console.log("dddddd" + grouped[key1][key2]);
+
+
+                    }
+                }
+
+
+                const options: Chart.ChartOptions = {
+                    scales: {
+                        xAxes: [{ stacked: true }],
+                        yAxes: [{
+                            stacked: false,
+                            ticks: {
+                                beginAtZero: true,
+                            },
+                        }]
+                    }
+                };
+
+
 
                 let data: ChartData =
                 {
                     labels: lbl,
                     datasets: [
                         {
-
-                            data: []
+                            label:'Closed',
+                            data: [grouped['Bünde']['Open'], grouped['Brilon']['Open']],
+                            fill: false,
+                            backgroundColor: 'rgba(255, 159, 64, 0.2)', // same color for all data elements
+                            borderColor: 'rgb(255, 159, 64)', // same color for all data elements
+                            borderWidth: 1
                         }, {
-
-                            data: []
+                            label:'Closed',
+                            data: [grouped['Bünde']['Closed'], grouped['Brilon']['Closed']],
+                            fill: false,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)', // same color for all data elements
+                            borderColor: 'rgb(255, 99, 132)', // same color for all data elements
+                            borderWidth: 1
                         }
 
 
-                    ]
+                    ],
+
+
                 };
 
                 resolve(data);
@@ -164,17 +203,19 @@ export class ListService implements IListService {
 
     public groupBy(objectArray, property1, property2) {
         return objectArray.reduce((acc, obj) => {
-           const key1 = obj[property1];
-           const key2 = obj[property2];
-           if (!acc[key1]) {
-              acc[key1] = [];
-           }
-           if (!acc[key1][key2]) {
-            acc[key1][key2] = 0;
-           }
+            const key1 = obj[property1];
+            const key2 = obj[property2];
+            if (!acc[key1]) {
+                acc[key1] = [];
+            }
+            if (!acc[key1][key2]) {
+                acc[key1][key2] = 0;
+            }
 
-           acc[key1][key2] += 1;
-           return acc;
+            acc[key1][key2] += 1;
+            return acc;
         }, {});
     }
+
+
 }

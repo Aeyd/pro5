@@ -35,17 +35,15 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
             legend: {
               display: false
             },
-            scales:
-            {
-              yAxes:
-                [{
-                  stacked: true,
-                  ticks:
-                  {
-                    beginAtZero: true
-                  }
-                }]
-            }
+            scales: {
+              xAxes: [{ stacked: true }],
+              yAxes: [{
+                  stacked: false,
+                  ticks: {
+                      beginAtZero: true,
+                  },
+              }]
+          }
           }}
         />
         <div style={{ clear: "both" }} />
