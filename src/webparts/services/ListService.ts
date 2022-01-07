@@ -210,6 +210,7 @@ export class ListService implements IListService {
             }
             if (!acc[key1][key2]) {
                 acc[key1][key2] = 0;
+                
             }
 
             acc[key1][key2] += 1;
