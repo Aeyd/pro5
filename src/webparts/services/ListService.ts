@@ -5,6 +5,7 @@ import { IListField } from './IListField';
 import { IListItem } from './IListItem';
 import { IList } from './IList';
 import { ChartData } from 'chart.js';
+import { AccessibleChartTable } from '@pnp/spfx-controls-react/lib/ChartControl';
 
 export class ListService implements IListService {
     private _context: WebPartContext;
@@ -136,11 +137,18 @@ export class ListService implements IListService {
             sp.web.lists.getById(listId).items.select(...fields).get().then((rows: any[]) => {
                 let lbl: string[] = [];
                 let count: number[] = [];
+                let lbl2: string[] = [];
+                let acc = [];
+
+
+                
 
                 let grouped = this.groupBy(rows, labelField, valueField);
 
-
-
+                JSON.stringify(grouped);
+                console.log(grouped);
+          
+                
 
                 for (var key1 in grouped) {
                     lbl.push(key1);
@@ -148,12 +156,28 @@ export class ListService implements IListService {
                     console.log("wee" + key1);
                     for (var key2 in grouped[key1]) {
 
+                        count.push
+
+                        console.log("wee2" + key2);
 
                         console.log("dddddd" + grouped[key1][key2]);
 
+                        let obj = {};
+
+                        obj[key2] = grouped[key1][key2];
+
+                        
+
+                        acc.push(obj);
+
+
+
+                        lbl2.push(key2);
+                        count.push(grouped[key1][key2]);
 
                     }
                 }
+               
 
 
                 const options: Chart.ChartOptions = {
@@ -166,32 +190,82 @@ export class ListService implements IListService {
                             },
                         }]
                     }
-                };
+                };               
+
+
+var vals = [];
+                acc.forEach( function( obj ){
+
+                    for( var key in obj ){
+                        if( vals[ key ] === undefined ) 
+                            vals[ key ] = []
+                
+                        vals[ key ].push( obj[ key ])
+                    }
+                
+                })
+                function random_rgba() {
+                    var o = Math.round, r = Math.random, s = 255;
+                    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+                }
+
+ var acc1=[];
+                for (var key1 in vals) {
+                    var hh={};
+
+
+                    var color = random_rgba();
+                 hh = {
+                    
+                        label:key1,
+                        data: vals[key1],
+                        fill: false,
+                        backgroundColor: color, // same color for all data elements  'rgba(255, 159, 64, 0.2)'
+                        borderColor: 'rgb(255, 159, 64)', // same color for all data elements
+                        borderWidth: 1
+                    };
+
+
+
+                    acc1.push(hh);
+
+                }
+            
+
+                console.log(acc);
+                console.log(vals);
+
+
+                 console.log("/////////////////");
+
+                console.log("key1 "+lbl);
+                console.log("key1 0 "+lbl[0]);
+                console.log("key1 1"+lbl[1]);
+                console.log("/////////////////");
+
+                console.log("key2 "+lbl2);
+                console.log("key2 0 "+lbl2[0]);
+                console.log("key2 1 "+lbl2[1]);
+                console.log("/////////////////");
+
+                console.log("zahl "+count);
+                console.log("zahl 0 "+count[0]);
+                console.log("zahl 1 "+count[1]);
+                console.log("/////////////////");
+
+                console.log([grouped['Bünde']['Open'], grouped['Brilon']['Open']]);
+
+
 
 
 
                 let data: ChartData =
                 {
                     labels: lbl,
-                    datasets: [
-                        {
-                            label:'Closed',
-                            data: [grouped['Bünde']['Open'], grouped['Brilon']['Open']],
-                            fill: false,
-                            backgroundColor: 'rgba(255, 159, 64, 0.2)', // same color for all data elements
-                            borderColor: 'rgb(255, 159, 64)', // same color for all data elements
-                            borderWidth: 1
-                        }, {
-                            label:'Closed',
-                            data: [grouped['Bünde']['Closed'], grouped['Brilon']['Closed']],
-                            fill: false,
-                            backgroundColor: 'rgba(255, 99, 132, 0.2)', // same color for all data elements
-                            borderColor: 'rgb(255, 99, 132)', // same color for all data elements
-                            borderWidth: 1
-                        }
+                    datasets: 
+                        acc1
 
-
-                    ],
+                    ,
 
 
                 };
@@ -202,9 +276,28 @@ export class ListService implements IListService {
     }
 
     public groupBy(objectArray, property1, property2) {
+
+        console.log(objectArray);
+        console.log(property1);
+
+       
+        /*
+
+            objectArray.sort(function (a, b) {
+                return a.field_Plant.localeCompare(b.field_Plant) || b.field_Status.localeCompare(a.field_Status);
+            });
+            */
+
+      
+
+
+
+        console.log(objectArray);
+
         return objectArray.reduce((acc, obj) => {
             const key1 = obj[property1];
             const key2 = obj[property2];
+            
             if (!acc[key1]) {
                 acc[key1] = [];
             }
@@ -214,6 +307,7 @@ export class ListService implements IListService {
             }
 
             acc[key1][key2] += 1;
+
             return acc;
         }, {});
     }
