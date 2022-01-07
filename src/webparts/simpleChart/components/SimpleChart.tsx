@@ -61,17 +61,17 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
       const dataProvider: IListService = new ListService(this.props.context);
 
       if(this.props.mode == Mode.Normal) {
-        dataProvider.getChartData(this.props.listName, this.props.labelColumnName, this.props.dataColumnName).then((data: ChartData) => {
+        dataProvider.getChartData(this.props.listName, this.props.labelColumnName, this.props.dataColumnName, this.props.sort).then((data: ChartData) => {
           resolve(data);
         });
       }
       else if(this.props.mode == Mode.Count) {
-        dataProvider.getChartDataCount(this.props.listName, this.props.labelColumnName).then((data: ChartData) => {
+        dataProvider.getChartDataCount(this.props.listName, this.props.labelColumnName, this.props.sort).then((data: ChartData) => {
           resolve(data);
         });
       }
       else if(this.props.mode == Mode.GroupByCount) {
-        dataProvider.getChartDataGroupByCount(this.props.listName, this.props.labelColumnName, this.props.dataColumnName).then((data: ChartData) => {
+        dataProvider.getChartDataGroupByCount(this.props.listName, this.props.labelColumnName, this.props.dataColumnName, this.props.sort).then((data: ChartData) => {
           resolve(data);
         });
       }

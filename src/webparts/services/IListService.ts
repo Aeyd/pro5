@@ -7,7 +7,7 @@ export interface IListService {
     getLists(): Promise<Array<IList>>;
     getFields(listId: string): Promise<Array<IListField>>;
     getListItems(listId: string, labelField: string, valueField: string): Promise<Array<IListItem>>;
-    getChartData(listId: string, labelField: string, valueField: string): Promise<ChartData>;
-    getChartDataCount(listId: string, labelField: string): Promise<ChartData>;
-    getChartDataGroupByCount(listId: string, labelField: string, valueField: string): Promise<ChartData>;
+    getChartData(listId: string, labelField: string, valueField: string, sort: number): Promise<ChartData>;
+    getChartDataCount(listId: string, labelField: string, sort: number): Promise<ChartData>;
+    getChartDataGroupByCount(listId: string, labelField: string, valueField: string, sort: number): Promise<ChartData>;
 }
