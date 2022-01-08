@@ -202,14 +202,6 @@ export class ListService implements IListService {
                             "86, 1, 145, 0.8",
                             "217, 1, 145, 0.8"
                         ]
-
-
-                        
-
-
-
-
-
                 }
                 ;
 
