@@ -11,7 +11,8 @@ import {
   IPropertyPaneGroup,
   IPropertyPaneField,
   IPropertyPaneDropdownProps,
-  WebPartContext
+  WebPartContext,
+  PropertyPaneSlider
 } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'SimpleChartWebPartStrings';
@@ -29,6 +30,7 @@ export interface ISimpleChartWebPartProps {
   dataColumnName: string;
   mode: number;
   sort: number;
+  max: number;
   colors: number;
   context: WebPartContext;
 }
@@ -64,6 +66,7 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
         heading: this.properties.heading,
         mode: this.properties.mode,
         sort: this.properties.sort,
+        max: this.properties.max,
         colors: this.properties.colors,
         listName: this.properties.listName,
         labelColumnName: this.properties.labelColumnName,
@@ -260,6 +263,14 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
             {
               groupName: 'Options',
               groupFields: [
+                PropertyPaneSlider('max', {
+                  label: 'Max Items',
+                  min: 1,
+                  max: 10000,
+                  value: 10000,
+                  showValue: true,
+                  step: 100
+                }),
                 PropertyPaneDropdown('sort', {
                   label: 'Sort',
                   selectedKey: SortMode.Unsorted,

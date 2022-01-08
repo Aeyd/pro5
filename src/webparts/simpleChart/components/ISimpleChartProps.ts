@@ -4,6 +4,7 @@ export interface ISimpleChartProps {
   heading: string;
   mode: number;
   sort: number;
+  max: number;
   colors: number;
   listName: string;
   labelColumnName: string;
