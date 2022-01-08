@@ -281,15 +281,19 @@ var vals = [];
         console.log(property1);
 
        
-        /*
+      
 
             objectArray.sort(function (a, b) {
                 return a.field_Plant.localeCompare(b.field_Plant) || b.field_Status.localeCompare(a.field_Status);
             });
-            */
+           
+  /*
+            objectArray.sort(function (a, b) {
+                return a.property1.localeCompare(b.property1) || b.property2.localeCompare(a.property2);
+            });
+             */
 
-      
-
+        
 
 
         console.log(objectArray);
