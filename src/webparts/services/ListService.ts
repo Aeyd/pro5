@@ -156,7 +156,6 @@ export class ListService implements IListService {
                     console.log("wee" + key1);
                     for (var key2 in grouped[key1]) {
 
-                        count.push
 
                         console.log("wee2" + key2);
 
@@ -173,27 +172,16 @@ export class ListService implements IListService {
 
 
                         lbl2.push(key2);
-                        count.push(grouped[key1][key2]);
 
                     }
                 }
                
 
 
-                const options: Chart.ChartOptions = {
-                    scales: {
-                        xAxes: [{ stacked: true }],
-                        yAxes: [{
-                            stacked: false,
-                            ticks: {
-                                beginAtZero: true,
-                            },
-                        }]
-                    }
-                };               
+               
 
 
-var vals = [];
+                var vals = [];
                 acc.forEach( function( obj ){
 
                     for( var key in obj ){
@@ -204,32 +192,51 @@ var vals = [];
                     }
                 
                 })
-                function random_rgba() {
-                    var o = Math.round, r = Math.random, s = 255;
-                    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+
+
+
+                var acc1=[];
+                var color={
+                        0:
+                            ["5, 1, 145, 0.8",
+                            "86, 1, 145, 0.8",
+                            "217, 1, 145, 0.8"
+                        ]
+
+
+                        
+
+
+
+
+
                 }
+                ;
 
- var acc1=[];
+
+                var index = 0; 
                 for (var key1 in vals) {
+
+
+
                     var hh={};
+                    //var color = random_rgba();
 
 
-                    var color = random_rgba();
-                 hh = {
-                    
+
+
+                     hh = {
                         label:key1,
                         data: vals[key1],
                         fill: false,
-                        backgroundColor: color, // same color for all data elements  'rgba(255, 159, 64, 0.2)'
+                        backgroundColor: 'rgba('+color[0][index]+')', // same color for all data elements  'rgba(255, 159, 64, 0.2)'
                         borderColor: 'rgb(255, 159, 64)', // same color for all data elements
                         borderWidth: 1
                     };
-
-
-
                     acc1.push(hh);
-
+                    index+=1;
                 }
+                
             
 
                 console.log(acc);
@@ -253,21 +260,12 @@ var vals = [];
                 console.log("zahl 1 "+count[1]);
                 console.log("/////////////////");
 
-                console.log([grouped['Bünde']['Open'], grouped['Brilon']['Open']]);
-
-
-
-
 
                 let data: ChartData =
                 {
                     labels: lbl,
                     datasets: 
-                        acc1
-
-                    ,
-
-
+                        acc1,
                 };
 
                 resolve(data);
@@ -277,24 +275,11 @@ var vals = [];
 
     public groupBy(objectArray, property1, property2) {
 
-        console.log(objectArray);
-        console.log(property1);
-
-       
-      
-
-            objectArray.sort(function (a, b) {
-                return a.field_Plant.localeCompare(b.field_Plant) || b.field_Status.localeCompare(a.field_Status);
-            });
-           
   /*
             objectArray.sort(function (a, b) {
                 return a.property1.localeCompare(b.property1) || b.property2.localeCompare(a.property2);
             });
              */
-
-        
-
 
         console.log(objectArray);
 
