@@ -3,7 +3,7 @@ import styles from './SimpleChart.module.scss';
 import { ISimpleChartProps } from './ISimpleChartProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 import { DateTimePicker, DateConvention, TimeConvention } from '@pnp/spfx-controls-react/lib/DateTimePicker';
-import { ChartControl, ChartType } from '@pnp/spfx-controls-react/lib/ChartControl';
+import { ChartControl, ChartType, ChartPalette} from '@pnp/spfx-controls-react/lib/ChartControl';
 import { ChartData } from 'chart.js';
 import { IListService } from '../../services/IListService';
 import { ListService } from '../../services/ListService';
@@ -17,6 +17,8 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
   public render(): React.ReactElement<ISimpleChartProps> {
     if(this._chartElem != undefined) {
       //this._chartElem.getChart().destroy();
+      //this._chartElem.getChart();
+      this._chartElem.update();
     }
     
     return (
@@ -26,6 +28,7 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
           ref={this._linkElement}
           datapromise={this._loadAsyncData()}
           //loadingtemplate={() => <div>...loading</div>}
+          palette={ChartPalette.OfficeMonochromatic1}
           options={{
             title: {
               display: true,
