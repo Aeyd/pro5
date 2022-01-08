@@ -29,12 +29,13 @@ export interface ISimpleChartWebPartProps {
   dataColumnName: string;
   mode: number;
   sort: number;
+  colors: number;
   context: WebPartContext;
 }
 
 export enum Mode {Normal=0, Count=1, GroupByCount=2};
-export enum Sort {Marketing=1, SalesMan=2};
-
+export enum SortMode {Unsorted=0, AscLabel=1, DescLabel=2, AscData=3, DescData=4};
+export enum ColorMode {Default=0, Mono=1, Colorful=2};
 
 /* TODO:
 
@@ -62,6 +63,8 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
       {
         heading: this.properties.heading,
         mode: this.properties.mode,
+        sort: this.properties.sort,
+        colors: this.properties.colors,
         listName: this.properties.listName,
         labelColumnName: this.properties.labelColumnName,
         dataColumnName: this.properties.dataColumnName,
@@ -243,7 +246,7 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
                   label: strings.DescriptionFieldLabel
                 }),
                 PropertyPaneDropdown('mode', {
-                  label: 'Data Mode',
+                  label: 'Mode',
                   selectedKey: Mode.Normal,
                   options : [
                     {key: Mode.Normal, text:'Normal'},
@@ -253,7 +256,32 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
                 })
               ]
             },
-            this.getConditionalGroup()
+            this.getConditionalGroup(),
+            {
+              groupName: 'Options',
+              groupFields: [
+                PropertyPaneDropdown('sort', {
+                  label: 'Sort',
+                  selectedKey: SortMode.Unsorted,
+                  options : [
+                    {key: SortMode.Unsorted, text:'unsorted'},
+                    {key: SortMode.AscData, text:'ascending data'},
+                    {key: SortMode.DescData, text:'descending data'},
+                    {key: SortMode.AscLabel, text:'ascending labels'},
+                    {key: SortMode.DescLabel, text:'descending labels'}
+                  ]
+                }),
+                PropertyPaneDropdown('colors', {
+                  label: 'Colors',
+                  selectedKey: SortMode.Unsorted,
+                  options : [
+                    {key: ColorMode.Default, text:'Standard'},
+                    {key: ColorMode.Mono, text:'Monochrome'},
+                    {key: ColorMode.Colorful, text:'Colorful'}
+                  ]
+                })
+              ]
+            }
           ]
         }
       ]
