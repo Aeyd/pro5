@@ -16,7 +16,10 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
   
   public render(): React.ReactElement<ISimpleChartProps> {
     if(this._chartElem != undefined) {
-      this._chartElem.getChart().destroy();
+      let chart = this._chartElem.getChart();
+      if(chart != undefined) {
+        chart.destroy();
+      }
     }
     
     return (
@@ -58,36 +61,11 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
 
   private _loadAsyncData(): Promise<ChartData> {
     return new Promise<ChartData>(resolve => {
-
       const dataProvider: IListService = new ListService(this.props.context);
 
-      if(this.props.mode == Mode.Normal) {
-        dataProvider.getChartData(this.props.listName, this.props.labelColumnName, this.props.dataColumnName, this.props.sort).then((data: ChartData) => {
-          resolve(data);
-        });
-      }
-      else if(this.props.mode == Mode.Count) {
-        dataProvider.getChartDataCount(this.props.listName, this.props.labelColumnName, this.props.sort).then((data: ChartData) => {
-          resolve(data);
-        });
-      }
-      else if(this.props.mode == Mode.GroupByCount) {
-        dataProvider.getChartDataGroupByCount(this.props.listName, this.props.labelColumnName, this.props.dataColumnName, this.props.sort).then((data: ChartData) => {
-          resolve(data);
-        });
-      }
-      else {
-        let data: ChartData =
-        {
-            labels: [],
-            datasets: [
-                {
-                    data: []
-                }
-            ]
-        };
+      dataProvider.getChartData(this.props).then((data: ChartData) => {
         resolve(data);
-      }
+      });
     });
   }
 }
