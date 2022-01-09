@@ -18,7 +18,7 @@
     "group": { "default": "Other" },
     "title": { "default": "Simple Chart" },
     "description": { "default": "Create a chart from a SharePoint list." },
-    "officeFabricIconFontName": "Page",
+    "officeFabricIconFontName": "Sunny",
     "properties": {
       "heading": "Simple Chart",
       "listName": "",

@@ -201,26 +201,26 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
 
     let groupFields : Array<IPropertyPaneField<any>> = new Array<IPropertyPaneField<any>>();
     let group : IPropertyPaneGroup = {
-      groupName: 'Data',
+      groupName: strings.DataGroupName,
       groupFields: groupFields,
     }
   
     let listChoice : IPropertyPaneField<IPropertyPaneDropdownProps> = PropertyPaneDropdown ('listName', {
-      label: 'List',
+      label: strings.ModeFieldList,
       options: this.lists,
       disabled: this.listsDropdownDisabled
     });
     groupFields.push(listChoice);
 
     let labelColumnChoice : IPropertyPaneField<IPropertyPaneDropdownProps> = PropertyPaneDropdown('labelColumnName', {
-      label: 'Label Column',
+      label: strings.LabelFieldLabel,
       options: this.columns,
       disabled: this.columnDropdownDisabled
     })
     groupFields.push(labelColumnChoice);
 
     let dataColumnChoice : IPropertyPaneField<IPropertyPaneDropdownProps> = PropertyPaneDropdown ('dataColumnName', {
-    label: 'Data Column',
+    label: strings.DataFieldLabel,
       options: this.columns,
       disabled: this.columnDropdownDisabled
     });
@@ -243,18 +243,18 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
           },
           groups: [
             {
-              groupName: 'General',
+              groupName: strings.GeneralFieldLabel,
               groupFields: [
                 PropertyPaneTextField('heading', {
                   label: strings.DescriptionFieldLabel
                 }),
                 PropertyPaneDropdown('mode', {
-                  label: 'Mode',
+                  label: strings.ModeFieldLabel,
                   selectedKey: Mode.Normal,
                   options : [
-                    {key: Mode.Normal, text:'Normal'},
-                    {key: Mode.Count, text:'Count'},
-                    {key: Mode.GroupByCount, text:'Group By Count'}
+                    {key: Mode.Normal, text:strings.ModeFieldNormal},
+                    {key: Mode.Count, text:strings.ModeFieldCount},
+                    {key: Mode.GroupByCount, text:strings.ModeFieldGroup}
                   ]
                 })
               ]
@@ -264,7 +264,7 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
               groupName: 'Options',
               groupFields: [
                 PropertyPaneSlider('max', {
-                  label: 'Max Items',
+                  label: strings.OptionsFieldLabel,
                   min: 1,
                   max: 10000,
                   value: 10000,
@@ -272,23 +272,23 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
                   step: 100
                 }),
                 PropertyPaneDropdown('sort', {
-                  label: 'Sort',
+                  label: strings.SortFieldLabel,
                   selectedKey: SortMode.Unsorted,
                   options : [
-                    {key: SortMode.Unsorted, text:'unsorted'},
-                    {key: SortMode.AscData, text:'ascending data'},
-                    {key: SortMode.DescData, text:'descending data'},
-                    {key: SortMode.AscLabel, text:'ascending labels'},
-                    {key: SortMode.DescLabel, text:'descending labels'}
+                    {key: SortMode.Unsorted, text:strings.SortFileUnsorted},
+                    {key: SortMode.AscData, text: strings.SortFileAsc},
+                    {key: SortMode.DescData, text:strings.SortFileDesc},
+                    {key: SortMode.AscLabel, text:strings.SortFileAscD},
+                    {key: SortMode.DescLabel, text:strings.SortFileDescD}
                   ]
                 }),
                 PropertyPaneDropdown('colors', {
-                  label: 'Colors',
+                  label: strings.ColorFieldLabel,
                   selectedKey: SortMode.Unsorted,
                   options : [
-                    {key: ColorMode.Default, text:'Standard'},
-                    {key: ColorMode.Mono, text:'Monochrome'},
-                    {key: ColorMode.Colorful, text:'Colorful'}
+                    {key: ColorMode.Default, text:strings.ColorFieldStandard},
+                    {key: ColorMode.Mono, text:strings.ColorFieldMonochrome},
+                    {key: ColorMode.Colorful, text:strings.ColorFieldColor}
                   ]
                 })
               ]
