@@ -18,12 +18,16 @@
     "group": { "default": "Other" },
     "title": { "default": "Simple Chart" },
     "description": { "default": "Create a chart from a SharePoint list." },
-    "officeFabricIconFontName": "Sunny",
+    "officeFabricIconFontName": "BarChartVerticalFill",
     "properties": {
       "heading": "Simple Chart",
       "listName": "",
       "labelColumnName": "",
-      "dataColumnName": ""
+      "dataColumnName": "",
+      "max":5000,
+      "sort":0,
+      "colors":0,
+      "mode":0
     }
   }]
 }

@@ -7,7 +7,8 @@ import { IList } from './IList';
 import { ChartData } from 'chart.js';
 import { AccessibleChartTable } from '@pnp/spfx-controls-react/lib/ChartControl';
 import { ISimpleChartProps } from '../simpleChart/components/ISimpleChartProps';
-import { Mode } from '../simpleChart/SimpleChartWebPart';
+import { Mode, SortMode } from '../simpleChart/SimpleChartWebPart';
+import { PaletteGenerator} from '@pnp/spfx-controls-react/lib/ChartControl';
 import { xorBy } from 'lodash';
 
 export class ListService implements IListService {
@@ -45,21 +46,39 @@ export class ListService implements IListService {
             defaultCachingTimeoutSeconds: 3600
         });
 
-        return new Promise<ChartData>(resolve => {
+        let data: ChartData =
+        {
+            labels: [],
+            datasets: [
+                {
+                    data: []
+                }
+            ]
+        };
 
-            let data: ChartData =
-            {
-                labels: [],
-                datasets: [
-                    {
-                        data: []
-                    }
-                ]
-            };
+        // get sort column and set adc or desc sorting
+        let sortField: string;
+        let sortType: boolean;
 
-            if(props.mode == Mode.Normal) {
-                let fields: string[] = ['Id', props.labelColumnName, props.dataColumnName];
-                sp.web.lists.getById(props.listName).items.select(...fields).top(props.max).usingCaching().get().then((rows: any[]) => {
+        if(props.sort == SortMode.Unsorted) {
+            sortField = "ID";
+            sortType = true;
+        }
+        else {
+            sortField = props.sort == SortMode.AscData || props.sort == SortMode.DescData ? props.dataColumnName : props.labelColumnName;
+            sortType = props.sort == SortMode.AscData || props.sort == SortMode.AscLabel ? true : false;
+        }
+
+        return new Promise<ChartData>((resolve, reject) => {
+            if(props.mode === Mode.Normal) {
+                if(props.labelColumnName === '' || props.dataColumnName === '') {
+                    reject(new Error('Please select a label and a data column.'));
+                    return;
+                }
+
+                const fields: string[] = ['Id', props.labelColumnName, props.dataColumnName];
+
+                sp.web.lists.getById(props.listName).items.select(...fields).top(props.max).orderBy(sortField, sortType).usingCaching().get().then((rows: any[]) => {
                     let lbl: string[] = [];
                     let val: number[] = [];
     
@@ -70,16 +89,20 @@ export class ListService implements IListService {
     
                     data.labels = lbl;
                     data.datasets[0].data = val;
+
                     resolve(data);
                 });
-            } else if(props.mode == Mode.Count) {
+            } else if(props.mode === Mode.Count) {
                 let fields: string[] = ['Id', props.labelColumnName];
                 sp.web.lists.getById(props.listName).items.select(...fields).top(props.max).usingCaching().get().then((rows: any[]) => {
                     let lbl: string[] = [];
                     let count: number[] = [];
-    
+
                     rows.map((item) => {
+                        // check if new group has to be created
                         let groupId = lbl.indexOf(item[props.labelColumnName]);
+
+                        // if group found add one to count
                         if (groupId > -1) {
                             count[groupId] += 1;
                         }
@@ -88,12 +111,45 @@ export class ListService implements IListService {
                             count.push(1);
                         }
                     });
-    
+                    
+                    let result = lbl.map(function (v, i) {
+                        return {
+                            label  : v,
+                            count  : count[i]
+                        };
+                    }).sort(function (a, b) {
+                        let item1, item2;
+
+                        if(props.sort == SortMode.AscData || props.sort == SortMode.DescData) {
+                            item1 = a.count;
+                            item2 = b.count;
+                        } 
+                        else
+                        {
+                            item1 = a.label;
+                            item2 = b.label;
+                        }
+
+
+                        if(item1 < item2) return -1;
+                        if(item1 > item2) return 1;
+                        return 0;
+                    })
+
+                    if(sortType === false) {
+                        result.reverse();
+                    }      
+
+                    result.forEach(function (v, i) {
+                        lbl[i] = v.label;
+                        count[i] = v.count;
+                    });
+
                     data.labels = lbl;
                     data.datasets[0].data = count;
                     resolve(data);
                 });                
-            } else if(props.mode == Mode.GroupByCount) {
+            } else if(props.mode === Mode.GroupByCount) {
                 let fields: string[] = ['Id', props.labelColumnName, props.dataColumnName];
                 sp.web.lists.getById(props.listName).items.select(...fields).top(props.max).usingCaching().get().then((rows: any[]) => {
                     let lbl: string[] = [];
@@ -154,18 +210,18 @@ export class ListService implements IListService {
                     data.labels = lbl;
                     data.datasets = acc1;
                     resolve(data);
-                });               
+                });             
             }
         });
     }
 
     public groupBy(objectArray, property1, property2) {
-        let unique = objectArray.map(item => item[property2]).filter((value, index, self) => self.indexOf(value) === index);
+        const unique = objectArray.map(item => item[property2]).filter((value, index, self) => self.indexOf(value) === index); 
 
         return objectArray.reduce((acc, obj) => {
             const key1 = obj[property1];
             const key2 = obj[property2];
-            
+
             if (!acc[key1]) {
                 acc[key1] = {};
                 for(let i = 0; i < unique.length; i++) {

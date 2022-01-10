@@ -266,8 +266,8 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
                 PropertyPaneSlider('max', {
                   label: strings.OptionsFieldLabel,
                   min: 1,
-                  max: 10000,
-                  value: 10000,
+                  max: 5000,
+                  value: 5000,
                   showValue: true,
                   step: 100
                 }),
