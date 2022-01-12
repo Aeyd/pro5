@@ -12,8 +12,10 @@ define([], function() {
     "SortFileAscD": "ascending labels",
     "SortFileDescD": "descending labels",
     "ColorFieldStandard": "Standard",
-    "ColorFieldMonochrome": "Monochrome",
-    "ColorFieldColor": "Colorful",
+    "ColorFieldMono1": "Monochrome 1",
+    "ColorFieldMono2": "Monochrome 2",
+    "ColorFieldColor1": "Colorful 1",
+    "ColorFieldColor2": "Colorful 2",
     "ModeFieldLabel": "Mode",
     "ModeFieldNormal": "Normal",
     "ModeFieldCount": "Count",
@@ -23,12 +25,7 @@ define([], function() {
     "ModeFieldList": "List",
     "LabelFieldLabel": "Label Column",
     "DataFieldLabel": "Data Column",
-
-
-
-
-
-
-
+    "PlaceholderDescription": "Please configure the Web Part.",
+    "PlaceholderButton": "Configure"
   }
 });

@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './SimpleChart.module.scss';
 import { ISimpleChartProps } from './ISimpleChartProps';
 import { escape } from '@microsoft/sp-lodash-subset';
-import { DateTimePicker, DateConvention, TimeConvention } from '@pnp/spfx-controls-react/lib/DateTimePicker';
+import { DateTimePicker, DateConvention, TimeConvention, DateTimePickerStrings } from '@pnp/spfx-controls-react/lib/DateTimePicker';
 import { ChartControl, ChartType, ChartPalette, PaletteGenerator} from '@pnp/spfx-controls-react/lib/ChartControl';
 import { Chart, ChartData } from 'chart.js';
 import { IListService } from '../../services/IListService';
@@ -11,10 +11,11 @@ import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { IListItem } from '../../services/IListItem';
 import { Placeholder } from '@pnp/spfx-controls-react/lib/Placeholder';
 import { ColorMode, Mode } from '../SimpleChartWebPart';
+import * as strings from 'SimpleChartWebPartStrings';
 
 export default class SimpleChart extends React.Component<ISimpleChartProps, {}> {
   private _chartElem: ChartControl = undefined;
-  private backgroundColors = [['#e31937', '#e31937'], ['#666666', '#e3e3e3'], ['#f55442', '#f5a142', '#f2f22e', '#8aed3e']];
+  private backgroundColors = [['#e31937', '#e31937'], ['#cfcfcf', '#60636a'], ['#f55442', '#f5a142', '#f2f22e', '#8aed3e'], ['#003f5c', '#58508d', '#bc5090', '#ff6361', 'ffa600']];
   
   public render(): React.ReactElement<ISimpleChartProps> {
 
@@ -26,8 +27,8 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
       return <Placeholder
         iconName='BarChartVerticalFill'
         iconText='Simple Chart'
-        description='Please configure the web part.'
-        buttonLabel='Configure'
+        description={strings.PlaceholderDescription}
+        buttonLabel={strings.PlaceholderButton}
         onConfigure={this._onConfigure}/>;
     }
 
@@ -86,7 +87,7 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
           [this.backgroundColors[this.props.colors][0], this.backgroundColors[this.props.colors][1]],
           data.datasets.length);
 
-          if(this.props.colors === ColorMode.Colorful) {
+          if(this.props.colors === ColorMode.Colorful1 || this.props.colors === ColorMode.Colorful2) {
             colorpalette = this.backgroundColors[this.props.colors];
           }
           
@@ -100,7 +101,7 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
           [this.backgroundColors[this.props.colors][0], this.backgroundColors[this.props.colors][1]],
           data.datasets[0].data.length);  
           
-          if(this.props.colors === ColorMode.Colorful) {
+          if(this.props.colors === ColorMode.Colorful1 || this.props.colors === ColorMode.Colorful2) {
             colorpalette = this.backgroundColors[this.props.colors];
             colorpalette = PaletteGenerator.generateRepeatingPattern(colorpalette, data.datasets[0].data.length);
           }
@@ -110,7 +111,7 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
 
         resolve(data);
       }).catch(error => {
-        reject(error)
+        reject(error);
       });
     });
   }

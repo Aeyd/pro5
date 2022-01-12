@@ -37,7 +37,7 @@ export interface ISimpleChartWebPartProps {
 
 export enum Mode {Normal=0, Count=1, GroupByCount=2};
 export enum SortMode {Unsorted=0, AscLabel=1, DescLabel=2, AscData=3, DescData=4};
-export enum ColorMode {Default=0, Mono=1, Colorful=2};
+export enum ColorMode {Default=0, Mono1=1, Mono2=2, Colorful1=3, Colorful2=4};
 
 /* TODO:
 
@@ -287,8 +287,10 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
                   selectedKey: SortMode.Unsorted,
                   options : [
                     {key: ColorMode.Default, text:strings.ColorFieldStandard},
-                    {key: ColorMode.Mono, text:strings.ColorFieldMonochrome},
-                    {key: ColorMode.Colorful, text:strings.ColorFieldColor}
+                    {key: ColorMode.Mono1, text:strings.ColorFieldMono1},
+                    {key: ColorMode.Mono2, text:strings.ColorFieldMono2},
+                    {key: ColorMode.Colorful1, text:strings.ColorFieldColor1},
+                    {key: ColorMode.Colorful2, text:strings.ColorFieldColor2}
                   ]
                 })
               ]

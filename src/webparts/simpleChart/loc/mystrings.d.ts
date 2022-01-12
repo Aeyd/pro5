@@ -12,8 +12,10 @@ declare interface ISimpleChartWebPartStrings {
   SortFileAscD: string;
   SortFileDescD: string;
   ColorFieldStandard: string;
-  ColorFieldMonochrome: string;
-  ColorFieldColor: string;
+  ColorFieldMono1: string;
+  ColorFieldMono2: string;
+  ColorFieldColor1: string;
+  ColorFieldColor2: string;
   ModeFieldNormal: string;
   ModeFieldCount: string;
   ModeFieldGroup: string;
@@ -22,6 +24,8 @@ declare interface ISimpleChartWebPartStrings {
   ModeFieldList: string;
   LabelFieldLabel: string;
   DataFieldLabel: string;
+  PlaceholderDescription: string;
+  PlaceholderButton: string;
 }
 
 declare module 'SimpleChartWebPartStrings' {
