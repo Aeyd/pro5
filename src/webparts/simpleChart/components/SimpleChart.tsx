@@ -15,7 +15,7 @@ import * as strings from 'SimpleChartWebPartStrings';
 
 export default class SimpleChart extends React.Component<ISimpleChartProps, {}> {
   private _chartElem: ChartControl = undefined;
-  private backgroundColors = [['#e31937', '#e31937'], ['#cfcfcf', '#60636a'], ['#f55442', '#f5a142', '#f2f22e', '#8aed3e'], ['#003f5c', '#58508d', '#bc5090', '#ff6361', 'ffa600']];
+  private backgroundColors = [['#e31937', '#e31937'], ['#60636a', '#cfcfcf'], ['#e31937', '#e37484'], ['#f55442', '#f5a142', '#f2f22e', '#8aed3e'], ['#003f5c', '#58508d', '#bc5090', '#ff6361', 'ffa600']];
   
   public render(): React.ReactElement<ISimpleChartProps> {
 
