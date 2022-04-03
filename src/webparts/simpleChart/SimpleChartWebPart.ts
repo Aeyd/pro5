@@ -39,19 +39,6 @@ export enum Mode {Normal=0, Count=1, GroupByCount=2};
 export enum SortMode {Unsorted=0, AscLabel=1, DescLabel=2, AscData=3, DescData=4};
 export enum ColorMode {Default=0, Mono1=1, Mono2=2, Colorful1=3, Colorful2=4};
 
-/* TODO:
-
-- finish property pane (multiple rows? colors?)
-- display placeholder (https://pnp.github.io/sp-dev-fx-controls-react/controls/Placeholder/) when chart is not configured
-- set colors for Chart (either EGGER red or gray)
-- use the strings. functionality translate webpart in German and English
-- cache List requests
-
-ERROR:
-- dont make list request for chart data when webpart not fully configured
-
-*/
-
 export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleChartWebPartProps> {
   private lists: IPropertyPaneDropdownOption[];
   private columns: IPropertyPaneDropdownOption[];
@@ -59,6 +46,7 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
   private listsDropdownDisabled: boolean;
   private columnDropdownDisabled: boolean;
 
+  // main render function, passes all property settings to the react component
   public render(): void {
     const element = React.createElement(
       SimpleChart,
@@ -197,6 +185,7 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
     return true;
   }
 
+  // populate property pane with listnames and column names based on choosen list
   private getConditionalGroup() : IPropertyPaneGroup{
 
     let groupFields : Array<IPropertyPaneField<any>> = new Array<IPropertyPaneField<any>>();
@@ -234,6 +223,7 @@ export default class SimpleChartWebPart extends BaseClientSideWebPart<ISimpleCha
     return group;
   }
 
+  // define the look of the controls
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [

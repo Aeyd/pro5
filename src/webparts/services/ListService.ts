@@ -69,6 +69,7 @@ export class ListService implements IListService {
             sortType = props.sort == SortMode.AscData || props.sort == SortMode.AscLabel ? true : false;
         }
 
+        // return differnt datapromised based on choosen data mode
         return new Promise<ChartData>((resolve, reject) => {
             if(props.mode === Mode.Normal) {
                 if(props.labelColumnName === '' || props.dataColumnName === '') {
@@ -153,13 +154,10 @@ export class ListService implements IListService {
                 let fields: string[] = ['Id', props.labelColumnName, props.dataColumnName];
                 sp.web.lists.getById(props.listName).items.select(...fields).top(props.max).usingCaching().get().then((rows: any[]) => {
                     let lbl: string[] = [];
-                    let count: number[] = [];
                     let lbl2: string[] = [];
                     let acc = [];
 
                     let grouped = this.groupBy(rows, props.labelColumnName, props.dataColumnName);
-    
-                    console.log(grouped);
 
                     for (var key1 in grouped) {
                         lbl.push(key1);
@@ -182,30 +180,19 @@ export class ListService implements IListService {
                         }
                     
                     })
-                    function random_rgba() {
-                        var o = Math.round, r = Math.random, s = 255;
-                        return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
-                    }
-    
+
                     var acc1=[];
                     for (var key1 in vals) {
                         var hh={};
 
-                        var color = random_rgba();
-                        hh = {
-                        
+                        hh = {  
                             label:key1,
                             data: vals[key1],
                             fill: false,
-                            //backgroundColor: color, // same color for all data elements  'rgba(255, 159, 64, 0.2)'
-                            //borderColor: 'rgb(255, 159, 64)', // same color for all data elements
                             borderWidth: 1
                         };
                         acc1.push(hh);
-    
                     }
-
-                    console.log(acc1);
 
                     data.labels = lbl;
                     data.datasets = acc1;

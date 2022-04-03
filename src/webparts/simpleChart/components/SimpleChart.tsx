@@ -15,14 +15,16 @@ import * as strings from 'SimpleChartWebPartStrings';
 
 export default class SimpleChart extends React.Component<ISimpleChartProps, {}> {
   private _chartElem: ChartControl = undefined;
-  private backgroundColors = [['#e31937', '#e31937'], ['#60636a', '#cfcfcf'], ['#e31937', '#e37484'], ['#f55442', '#f5a142', '#f2f22e', '#8aed3e'], ['#003f5c', '#58508d', '#bc5090', '#ff6361', 'ffa600']];
+  private backgroundColors: Array<string[]> = [['#e31937', '#e31937'], ['#60636a', '#cfcfcf'], ['#e31937', '#e37484'], ['#f55442', '#f5a142', '#f2f22e', '#8aed3e'], ['#003f5c', '#58508d', '#bc5090', '#ff6361', 'ffa600']];
   
   public render(): React.ReactElement<ISimpleChartProps> {
 
+    // if chart already existing, destroy it before creating new chart
     if(this._chartElem != undefined) {
       this._chartElem.getChart().destroy();
     }
     
+    // display a placeholder if chart is not configured
     if(this.props.listName === "") {
       return <Placeholder
         iconName='BarChartVerticalFill'
@@ -32,14 +34,13 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
         onConfigure={this._onConfigure}/>;
     }
 
+    // return the chart, provide a datapromise for asynch data
     return (
       <div className={styles.simpleChart} >
         <ChartControl
           type={ChartType.Bar}
           ref={this._linkElement}
           datapromise={this._loadAsyncData()}
-          //loadingtemplate={() => <Spinner size={SpinnerSize.large} label="Loading..."  />}
-          //palette={ChartPalette.OfficeMonochromatic1}
           options={{
             title: {
               display: true,
@@ -80,7 +81,8 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
 
       dataProvider.getChartData(this.props)
       .then((data: ChartData) => {
-        // set background color
+
+        // set chart color
         if(this.props.mode === Mode.GroupByCount){
           
           let colorpalette = PaletteGenerator.generateNonRepeatingGradient(
@@ -111,6 +113,8 @@ export default class SimpleChart extends React.Component<ISimpleChartProps, {}> 
 
         resolve(data);
       }).catch(error => {
+        // normally pnp chart controls would allow to fetch the error and display an error control instead of the chart
+        // but this is not supported since targeting SP2016 restricts us to use and old version of pnp chart controls.
         reject(error);
       });
     });
